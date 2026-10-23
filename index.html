@@ -1,0 +1,737 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Padel Resort · Puçol</title>
+<meta name="description" content="Reserva de pistas de pádel en Padel Resort, Puçol (València). 4 pistas de cristal indoor.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800;900&display=swap">
+<style>
+/* Layout: portada de pista azul a sangre, títulos XXL; debajo reserva sobre el plano real del club y contacto */
+:root{
+  --blue:#1D49CF; --blue-2:#163AA8; --blue-3:#0F2A80; --lime:#8EE04B; --ink:#0A0C12; --ink-2:#4C5263; --mute:#8C92A3;
+  --paper:#FFFFFF; --soft:#F3F5F9; --line:#E3E6ED; --taken:#ECEEF3; --turf:#3E9B45; --red:#EE6A5E;
+  --f-hero:'Anton','Impact',sans-serif; --f-body:'Archivo',system-ui,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+.lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--blue)}
+.wrap{max-width:1280px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+button{font:inherit;color:inherit;cursor:pointer}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--lime);outline-offset:2px}
+.tn{font-variant-numeric:tabular-nums}
+.H{font-family:var(--f-body);font-weight:900;text-transform:uppercase;letter-spacing:-.02em;line-height:.92}
+.H em{font-style:normal;color:var(--lime)}
+.mask{display:block;overflow:hidden;padding-bottom:.04em}
+.mask>span{display:block}
+
+/* pill buttons */
+.pill{display:inline-flex;align-items:center;gap:10px;border:0;border-radius:40px;padding:6px 6px 6px 18px;font-weight:800;font-size:13px;text-decoration:none;background:#fff;color:var(--ink);transition:transform .25s}
+.pill i{width:32px;height:32px;border-radius:50%;background:var(--lime);display:grid;place-items:center;font-style:normal;transition:transform .3s}
+.pill:hover i{transform:rotate(-45deg)}
+.pill.lime{background:var(--lime);padding:10px 18px}
+.pill.dark{background:var(--ink);color:#fff}
+
+/* nav */
+header{position:absolute;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:30;color:#fff}
+header .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-block:22px}
+.logo{font-family:var(--f-body);font-weight:900;font-size:19px;line-height:.85;text-transform:uppercase;letter-spacing:-.01em;text-decoration:none}
+.links{display:flex;gap:30px;font-size:13px;font-weight:600;opacity:.9}
+.links a{text-decoration:none;position:relative}
+.links a::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:2px;background:var(--lime);transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.links a:hover::after{transform:scaleX(1)}
+.nr{display:flex;gap:8px}
+.nr .pill{padding:9px 16px}
+@media (max-width:860px){.links{display:none}.nr .pill:first-child{display:none}}
+.sticky{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:40;background:#ffffffee;backdrop-filter:blur(12px);border-bottom:1px solid var(--line);transform:translateY(-110%);transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+.sticky.on{transform:none}
+.sticky .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-block:10px}
+.sticky .links{opacity:1;color:var(--ink-2)}
+
+/* HERO */
+.hero{position:relative;min-height:max(680px,92vh);background:var(--blue);color:#fff;overflow:hidden;display:flex;flex-direction:column}
+.hero canvas{position:absolute;inset:0;width:100%;height:100%}
+.guides{position:absolute;inset:0;pointer-events:none}
+.guides i{position:absolute;background:#ffffff1f}
+.guides .v{top:0;bottom:0;width:1px}.guides .h{left:0;right:0;height:1px}
+.court-line{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.court-line path{stroke:#fff;stroke-width:10;fill:none;stroke-linecap:square}
+.ballwrap{position:absolute;right:16%;top:24%;width:70px;height:70px;pointer-events:none}
+.ball{width:46px;height:46px;display:block;filter:drop-shadow(0 4px 6px #0003)}
+.shadow{position:absolute;left:4px;top:130px;width:40px;height:10px;border-radius:50%;background:#0006;filter:blur(4px)}
+.hero h1 .ch{cursor:default}
+.racket{position:absolute;left:7%;bottom:18%;width:180px;opacity:.95;pointer-events:none;transform:rotate(-28deg)}
+.hero-c{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding-block:120px 140px}
+.hero h1{font-family:var(--f-hero);font-weight:400;font-size:clamp(84px,15vw,230px);line-height:.86;margin:0;letter-spacing:-.01em;text-transform:uppercase}
+.hero h1 .ch{display:inline-block;will-change:transform}
+.hero .sub{font-family:var(--f-body);font-weight:800;text-transform:uppercase;font-size:clamp(14px,1.6vw,20px);line-height:1.1;margin:18px 0 26px;letter-spacing:.01em}
+.hero-b{position:absolute;left:0;right:0;bottom:0;z-index:3}
+.hero-b .wrap{display:grid;grid-template-columns:1fr auto 1fr;align-items:end;gap:20px;padding-block:24px}
+.stat{display:flex;align-items:center;gap:10px;font-size:11px;font-weight:800;text-transform:uppercase;line-height:1.15;letter-spacing:.02em}
+.stat .ic{width:36px;height:36px;border:1.5px solid #fff;border-radius:50%;display:grid;place-items:center}
+.stat.r{justify-self:end;text-align:right}
+.scroll{width:44px;height:44px;border:1.5px solid #fff;border-radius:50%;display:grid;place-items:center}
+.scroll i{width:6px;height:6px;background:#fff;border-radius:50%;animation:dot 1.6s ease-in-out infinite}
+@keyframes dot{0%,100%{transform:translateY(-8px);opacity:0}50%{transform:translateY(4px);opacity:1}}
+
+@media (max-width:700px){.racket{display:none}.ballwrap{right:4%;top:11%;transform:scale(.7)}}
+/* AHORA MISMO (flotante) */
+.now{position:absolute;right:max(20px,env(safe-area-inset-right,0px));top:120px;z-index:3;width:330px;background:#0B1F6Bcc;backdrop-filter:blur(14px);border:1px solid #ffffff2a;border-radius:20px;padding:18px;text-align:left}
+.now h3{margin:0;font-size:15px;display:flex;gap:10px;align-items:center}
+.now h3 i{width:8px;height:8px;border-radius:50%;background:var(--lime);box-shadow:0 0 0 4px #8EE04B33;animation:pulse 2s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 8px #8EE04B00}}
+.now p{margin:2px 0 12px;font-size:12px;color:#BFD0FF}
+.now ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.now li{display:grid;grid-template-columns:62px 1fr auto;gap:10px;align-items:center;background:#ffffff10;border-radius:10px;padding:9px 12px;font-size:13px}
+.now li span{font-size:12px;color:#BFD0FF}
+.now li em{font-style:normal;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.now li em.f{color:var(--lime)} .now li em.t{color:#C5CCE6}
+.now .nx{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:12px;font-size:13px}
+@media (max-width:1100px){.now{position:relative;top:auto;right:auto;width:auto;margin:0 max(20px,env(safe-area-inset-right,0px)) 110px max(20px,env(safe-area-inset-left,0px))}.hero-c{padding-bottom:30px}}
+
+/* sections */
+section{padding-block:110px}
+.sh{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:end;margin-bottom:40px}
+.sh small{display:block;font-size:12px;font-weight:700;color:var(--mute);margin-bottom:10px}
+.sh h2{font-size:clamp(44px,6.4vw,92px);margin:0}
+.sh p{max-width:36ch;color:var(--ink-2);font-size:14px;margin:0}
+@media (max-width:760px){.sh{grid-template-columns:1fr}}
+
+/* tabla */
+.ctrl{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.dy{flex:none;border:1px solid var(--line);background:var(--paper);border-radius:16px;padding:10px 14px;text-align:left;min-width:84px;transition:transform .2s,border-color .2s}
+.dy:hover{transform:translateY(-2px);border-color:var(--ink)}
+.dy small{display:block;font-size:11px;font-weight:700;text-transform:uppercase;color:var(--mute);letter-spacing:.08em}
+.dy b{font-family:var(--f-hero);font-size:30px;font-weight:400;line-height:1}
+.dy em{display:block;font-style:normal;font-size:11px;font-weight:700;color:#3C8A16}
+.dy[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+.dy[aria-pressed="true"] small{color:#BFD0FF}.dy[aria-pressed="true"] em{color:var(--lime)}
+.bands{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--paper);border-radius:40px;padding:8px 15px;font-size:13px;font-weight:700;color:var(--ink-2)}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.sum{font-size:14px;color:var(--ink-2);margin:14px 0}
+.sum b{color:var(--ink)}
+.tbox{border:1px solid var(--line);border-radius:22px;overflow:auto;background:var(--paper)}
+table.mx{width:100%;border-collapse:collapse;min-width:640px}
+.mx th{position:sticky;top:0;background:var(--soft);text-align:left;padding:16px 12px;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);border-bottom:1px solid var(--line)}
+.mx th small{display:block;font-size:11px;font-weight:600;letter-spacing:0;text-transform:none;color:var(--mute)}
+.mx td{padding:6px;border-bottom:1px solid var(--line)}
+.mx tr:last-child td{border-bottom:0}
+.mx td.t{padding:10px 18px;white-space:nowrap;width:160px}
+.mx td.t b{font-family:var(--f-hero);font-weight:400;font-size:22px;letter-spacing:.02em}
+.mx td.t span{display:block;font-size:12px;color:var(--mute);font-weight:600}
+.cell{width:100%;min-height:56px;border-radius:14px;border:1px solid transparent;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 14px;font-weight:700;font-size:14px;transition:transform .15s,background .15s}
+.cell.free{background:#EEF9E4;border-color:#C6EAA6;color:#2E7A0F}
+.cell.free:hover{background:var(--lime);border-color:var(--lime);color:var(--ink);transform:scale(1.02)}
+.cell.free i{width:26px;height:26px;border-radius:50%;background:#fff;display:grid;place-items:center;font-style:normal;font-size:13px}
+.cell.taken{background:var(--taken);color:#A6ACBA;cursor:not-allowed;background-image:repeating-linear-gradient(135deg,transparent 0 7px,#E2E5EC 7px 8px)}
+.cell.past{background:transparent;color:#C3C8D2;cursor:default;justify-content:center}
+.cell.mine{background:var(--blue);color:#fff}
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:16px;font-size:13px;color:var(--ink-2)}
+.legend i{display:inline-block;width:14px;height:14px;border-radius:4px;margin-right:6px;vertical-align:-2px}
+
+/* plano 3D */
+.planz{background:var(--soft);overflow:hidden}
+.stage{perspective:1600px;display:grid;place-items:center;margin:18px 0}
+.turf{width:min(1120px,100%);aspect-ratio:1000/590;max-width:100%;position:relative;border-radius:22px;background:#2F8A3A;transform-style:preserve-3d;box-shadow:0 60px 80px -40px #0B3A1355;overflow:hidden;border:6px solid #1A2233}
+.turf svg{position:absolute;inset:0;width:100%;height:100%}
+.court{cursor:pointer}
+.court .surf{transition:fill .3s}
+.court.free .surf{fill:var(--blue)} .court.taken .surf,.court.past .surf{fill:#2A3B73}
+.court .ring{fill:none;stroke-width:6;transition:stroke .3s}
+.court.free .ring{stroke:var(--lime)} .court.taken .ring,.court.past .ring{stroke:var(--red);stroke-opacity:.75} .court.mine .ring{stroke:#fff}
+.court.free:hover .surf{fill:#2558E8}
+.court.taken{cursor:not-allowed}
+.court .tag rect{transition:fill .3s}
+.court.free .tag rect{fill:var(--lime)} .court.taken .tag rect,.court.past .tag rect{fill:var(--red)} .court.mine .tag rect{fill:#fff}
+.court .tag text{font-family:'Archivo',sans-serif;font-weight:900;font-size:17px;fill:var(--ink);letter-spacing:1px}
+.court .num{font-family:'Anton',sans-serif;font-size:48px;fill:#fff}
+.wall rect{fill:#D9DDE6}.wall text{font-family:'Archivo',sans-serif;font-weight:800;font-size:12px;letter-spacing:3px;fill:#5B6275}
+.furn path,.furn rect{fill:#1A2233}.furn text{font-family:'Archivo',sans-serif;font-weight:800;font-size:12px;letter-spacing:2px;fill:#fff}
+.furn.alt rect{fill:#7A5A3A}.furn.alt2 rect{fill:#2F7E36}
+.room{font-family:'Archivo',sans-serif;font-weight:800;font-size:13px;letter-spacing:2px;fill:#8C92A3}
+/* deslizables sin barra de scroll */
+.slider{position:relative;display:grid;grid-template-columns:40px minmax(0,1fr) 40px;gap:8px;align-items:center}
+.rail{display:flex;gap:8px;overflow-x:auto;scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none;padding:6px 2px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 24px,#000 calc(100% - 24px),transparent);mask-image:linear-gradient(90deg,transparent,#000 24px,#000 calc(100% - 24px),transparent);cursor:grab}
+.rail::-webkit-scrollbar{display:none;height:0}
+.rail.drag{cursor:grabbing;scroll-behavior:auto}
+.sa{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--paper);font-size:20px;line-height:1;display:grid;place-items:center;transition:opacity .2s,background .2s}
+.sa:hover{background:var(--ink);color:#fff}
+.sa:disabled{opacity:.25;cursor:default;background:var(--paper);color:var(--ink)}
+@media (max-width:600px){.slider{grid-template-columns:minmax(0,1fr)}.sa{display:none}}
+.tm{flex:none;border:1px solid var(--line);background:var(--paper);border-radius:14px;padding:8px 12px;min-width:86px;text-align:left}
+.tm b{font-family:var(--f-hero);font-weight:400;font-size:22px;display:block;line-height:1.05}
+.tm .bars{display:flex;gap:3px;margin-top:6px}
+.tm .bars i{flex:1;height:5px;border-radius:2px;background:var(--red);opacity:.45}
+.tm .bars i.f{background:#4DB21E;opacity:1}
+.tm[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+.tm[aria-pressed="true"] .bars i.f{background:var(--lime)}
+.tm.gone{opacity:.35}
+.plan-info{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-top:14px;font-size:14px;color:var(--ink-2)}
+.plan-info b{color:var(--ink)}
+
+
+/* reservar: plano + horas de la pista elegida */
+.book{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:28px;align-items:start;margin-top:18px}
+@media (max-width:960px){.book{grid-template-columns:1fr}}
+.book .stage{margin:0}
+.turf{aspect-ratio:750/550!important;width:100%!important}
+.wall{fill:#D9DDE6}
+.court .surf{fill:var(--blue)}
+.court.full .surf{fill:#2A3B73}
+.court .ring{stroke:transparent}
+.court.sel .ring{stroke:var(--lime);stroke-width:8}
+.court:not(.sel){opacity:.92}
+.court:focus{outline:none}.court:focus-visible .ring{stroke:#fff;stroke-width:8}
+.court:hover .surf{fill:#2558E8}
+.court .tag rect{fill:#fff}
+.court.sel .tag rect{fill:var(--lime)}
+.court.full .tag rect{fill:var(--red)}
+.hours{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:22px;min-width:0}
+.hours .hd{display:flex;justify-content:space-between;align-items:end;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.hours .hd b{display:block;font-family:var(--f-hero);font-weight:400;font-size:44px;line-height:.95;text-transform:uppercase}
+.hours .hd span{font-size:14px;color:var(--ink-2)}
+.cpick{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:16px}
+.cpick button{border:1px solid var(--line);background:var(--soft);border-radius:12px;padding:9px 4px;font-weight:800;font-size:14px}
+.cpick button small{display:block;font-size:11px;font-weight:600;color:var(--mute)}
+.cpick button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.cpick button[aria-pressed="true"] small{color:var(--lime)}
+.hgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:8px}
+.hs{border-radius:14px;padding:12px 14px;text-align:left;border:2px solid transparent;display:grid;gap:2px;transition:transform .15s,box-shadow .15s}
+.hs b{font-family:var(--f-hero);font-weight:400;font-size:26px;line-height:1}
+.hs small{font-size:12px;font-weight:700}
+.hs .st{font-size:11px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+.hs .st i{width:8px;height:8px;border-radius:50%}
+.hs.free{background:#E6F8D6;border-color:#8EE04B;color:#1F5B06}
+.hs.free .st i{background:#3BA70F}
+.hs.free:hover{background:var(--lime);color:var(--ink);transform:translateY(-2px);box-shadow:0 10px 20px -10px #3BA70F88}
+.hs.taken{background:#F1F2F5;color:#9AA0AE;cursor:not-allowed;background-image:repeating-linear-gradient(135deg,transparent 0 8px,#E6E8EE 8px 9px)}
+.hs.taken b{text-decoration:line-through;text-decoration-thickness:2px}
+.hs.taken .st i{background:var(--red)}
+.hs.past{background:transparent;border:2px dashed var(--line);color:#BFC4CF;cursor:default}
+.hs.past .st i{background:#C9CDD6}
+.hs.mine{background:var(--blue);color:#fff}
+.hs.mine .st i{background:var(--lime)}
+.hours .empty{padding:30px;text-align:center;color:var(--mute)}
+/* partidas abiertas */
+.matches{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width:1000px){.matches{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:600px){.matches{grid-template-columns:1fr}}
+.mt{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:20px;display:flex;flex-direction:column;gap:14px;transition:transform .25s,box-shadow .25s}
+.mt:hover{transform:translateY(-4px);box-shadow:0 24px 40px -24px #1D49CF55}
+.mt .when{display:flex;justify-content:space-between;align-items:start;gap:10px}
+.mt .when b{font-family:var(--f-hero);font-weight:400;font-size:44px;line-height:.9;display:block}
+.mt .when span{font-size:13px;color:var(--ink-2);font-weight:600}
+.lvl{background:var(--soft);border-radius:30px;padding:5px 11px;font-size:12px;font-weight:800;white-space:nowrap}
+.players{display:flex;gap:8px}
+.pl{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:14px;background:var(--blue);color:#fff}
+.pl.empty{background:transparent;border:2px dashed #C3C8D3;color:var(--mute);font-size:20px}
+.pl.me{background:var(--lime);color:var(--ink)}
+.mt .foot{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.mt .foot span{font-size:13px;color:var(--ink-2);font-weight:700}
+.join{border:0;border-radius:40px;background:var(--ink);color:#fff;padding:10px 18px;font-weight:800;font-size:13px}
+.join[disabled]{background:var(--lime);color:var(--ink);cursor:default}
+/* el club */
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+@media (max-width:1000px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.cards{grid-template-columns:1fr}}
+.cc{border-radius:20px;overflow:hidden;background:var(--soft);display:flex;flex-direction:column}
+.cc .art{aspect-ratio:4/3;max-width:100%;position:relative;overflow:hidden}
+.cc .art svg{position:absolute;inset:0;width:100%;height:100%;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.cc:hover .art svg{transform:scale(1.06)}
+.cc .bd{padding:18px}
+.cc h4{margin:0 0 6px;font-size:20px;font-weight:900;text-transform:uppercase;line-height:1}
+.cc p{margin:0;font-size:14px;color:var(--ink-2)}
+
+/* bandera césped */
+
+/* contacto oscuro */
+.dark{background:var(--ink);color:#fff;position:relative;overflow:hidden}
+.dark .sh p{color:#A8AEBE}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width:900px){.grid3{grid-template-columns:1fr}}
+.dbox{border:1px solid #ffffff1c;border-radius:22px;padding:24px;background:#ffffff06}
+.dbox h5{margin:0 0 14px;font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--lime)}
+.dbox dl{display:grid;grid-template-columns:1fr auto;gap:10px 14px;margin:0;font-size:15px}
+.dbox dt{color:#A8AEBE}.dbox dd{margin:0;text-align:right;font-weight:700}
+.dbox dd.today{color:var(--lime)}
+.dbox p{margin:0 0 8px}
+.copy{border:1px solid #ffffff2a;background:none;border-radius:30px;padding:4px 10px;font-size:11px;font-weight:800;margin-left:8px;color:#fff}
+footer{background:var(--ink);color:#6F7586;font-size:12px;padding-block:22px;border-top:1px solid #ffffff14}
+footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.mega{font-family:var(--f-hero);font-size:clamp(90px,20vw,300px);line-height:.8;text-transform:uppercase;color:#ffffff0d;white-space:nowrap;margin-top:60px;will-change:transform}
+
+/* hoja de reserva */
+.scrim{position:fixed;inset:0;background:#0A0C1299;z-index:90;opacity:0;pointer-events:none;transition:opacity .3s}
+.scrim.on{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:50%;top:50%;width:min(480px,calc(100% - 32px));max-height:calc(100% - 40px);overflow:auto;background:var(--paper);border-radius:26px;z-index:91;transform:translate(-50%,-44%) scale(.96);opacity:0;pointer-events:none;transition:transform .45s cubic-bezier(.2,.8,.2,1),opacity .3s}
+.sheet.on{opacity:1;transform:translate(-50%,-50%);pointer-events:auto}
+.sheet .tk{background:var(--blue);color:#fff;padding:24px;position:relative;overflow:hidden}
+.sheet .tk svg{position:absolute;right:-20px;top:-10px;width:220px;opacity:.2}
+.sheet .tk svg *{stroke:#fff;fill:none;stroke-width:1.5}
+.sheet .tk small{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#BFD0FF}
+.sheet .tk b{display:block;font-family:var(--f-hero);font-weight:400;font-size:56px;line-height:.95;text-transform:uppercase}
+.sheet .tk .r{display:flex;gap:18px;flex-wrap:wrap;font-size:14px;font-weight:700;margin-top:10px}
+.sheet form{padding:22px;display:grid;gap:12px}
+.sheet label{display:grid;gap:6px;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+.sheet input{border:1px solid var(--line);border-radius:14px;padding:13px 14px;font:inherit;font-size:16px;background:var(--soft);color:var(--ink);text-transform:none;letter-spacing:0;font-weight:500}
+.sheet .acts{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:4px}
+.sheet .acts button{border:0;border-radius:40px;padding:13px 22px;font-weight:800}
+.b-ghost{background:var(--soft)!important}
+.b-go{background:var(--lime)!important;color:var(--ink)}
+.sheet .note{font-size:12px;color:var(--mute);margin:0}
+.okv{padding:30px 24px;text-align:center}
+.okv .c{width:84px;height:84px;border-radius:50%;background:var(--lime);display:grid;place-items:center;margin:0 auto 14px}
+.okv h3{font-family:var(--f-hero);font-weight:400;font-size:48px;margin:0;text-transform:uppercase}
+.okv code{font-family:var(--f-hero);font-size:30px;letter-spacing:.06em}
+.toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom,0px));transform:translate(-50%,calc(100% + 80px));background:var(--ink);color:#fff;padding:12px 20px;border-radius:40px;font-weight:700;font-size:14px;z-index:95;transition:transform .4s cubic-bezier(.2,.8,.2,1);max-width:calc(100% - 32px)}
+.toast.on{transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+
+<header id="top"><div class="wrap">
+  <a class="logo" href="#top" data-go>Padel<br>Resort</a>
+  <nav class="links"><a href="#reservar" data-go>Reservar</a><a href="#partidas" data-go>Partidas</a><a href="#club" data-go>El club</a><a href="#contacto" data-go>Contacto</a></nav>
+  <div class="nr"><button class="pill" id="mine1" style="padding:9px 16px">Mis reservas</button><a class="pill lime" href="#reservar" data-go>Reservar</a></div>
+</div></header>
+<div class="sticky" id="sticky"><div class="wrap">
+  <a class="logo" href="#top" data-go style="color:var(--ink)">Padel<br>Resort</a>
+  <nav class="links"><a href="#reservar" data-go>Reservar</a><a href="#partidas" data-go>Partidas</a><a href="#club" data-go>El club</a><a href="#contacto" data-go>Contacto</a></nav>
+  <div class="nr"><button class="pill dark" id="mine2" style="padding:9px 16px">Mis reservas</button><a class="pill lime" href="#reservar" data-go>Reservar</a></div>
+</div></div>
+
+<div class="hero">
+  <canvas id="grain" aria-hidden="true"></canvas>
+  <div class="guides" aria-hidden="true"><i class="v" style="left:18%"></i><i class="v" style="left:50%"></i><i class="v" style="left:82%"></i><i class="h" style="top:16%"></i><i class="h" style="top:84%"></i></div>
+  <svg class="court-line" viewBox="0 0 1000 700" preserveAspectRatio="none" aria-hidden="true"><path id="cline" d="M640 -20 L1020 560"/><path id="cline2" d="M-20 640 L300 700" style="stroke-width:6;opacity:.6"/></svg>
+  <svg class="racket" id="racket" viewBox="0 0 120 260" aria-hidden="true"><ellipse cx="60" cy="72" rx="54" ry="66" fill="#0A0C12"/><ellipse cx="60" cy="72" rx="46" ry="58" fill="#141826"/><g fill="#2B3247"><circle cx="44" cy="52" r="3"/><circle cx="60" cy="48" r="3"/><circle cx="76" cy="52" r="3"/><circle cx="40" cy="70" r="3"/><circle cx="60" cy="68" r="3"/><circle cx="80" cy="70" r="3"/><circle cx="44" cy="88" r="3"/><circle cx="60" cy="88" r="3"/><circle cx="76" cy="88" r="3"/><circle cx="52" cy="104" r="3"/><circle cx="68" cy="104" r="3"/></g><path d="M40 128 L52 160 L68 160 L80 128" fill="#0A0C12"/><rect x="51" y="158" width="18" height="90" rx="6" fill="#8EE04B"/><rect x="51" y="200" width="18" height="48" rx="6" fill="#0A0C12"/><text x="60" y="78" text-anchor="middle" fill="#8EE04B" font-family="Anton" font-size="20">PR</text></svg>
+  <div class="ballwrap" id="ballwrap" aria-hidden="true"><svg class="ball" id="ball" viewBox="0 0 46 46" aria-hidden="true"><defs><radialGradient id="bg1" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#F2FF8A"/><stop offset=".55" stop-color="#C9E63A"/><stop offset="1" stop-color="#93AE1E"/></radialGradient><clipPath id="bc"><circle cx="23" cy="23" r="22"/></clipPath></defs><circle cx="23" cy="23" r="22" fill="url(#bg1)"/><g clip-path="url(#bc)" fill="none" stroke="#fff" stroke-opacity=".9" stroke-width="2"><path d="M6 4 C 18 14, 18 32, 6 42"/><path d="M40 4 C 28 14, 28 32, 40 42"/></g></svg><div class="shadow" id="bshadow"></div></div>
+
+  <div class="hero-c">
+    <h1 id="h1"><span class="mask"><span>Padel</span></span><span class="mask"><span>Resort</span></span></h1>
+    <div class="sub"><span class="mask"><span>4 pistas de cristal indoor</span></span><span class="mask"><span>Puçol · València</span></span></div>
+    <a class="pill" id="cta" href="#reservar" data-go>Reservar pista <i>↗</i></a>
+  </div>
+
+  <aside class="now" id="now" aria-live="polite">
+    <h3><i></i>Ahora mismo en el club</h3><p id="nowWhen"></p><ul id="nowList"></ul>
+    <div class="nx"><span id="nowNext"></span><a class="pill lime" id="nowGo" href="#reservar" style="padding:8px 14px">Reservar</a></div>
+  </aside>
+
+  <div class="hero-b"><div class="wrap">
+    <div class="stat"><span class="ic">4</span><span>Pistas<br>de cristal</span></div>
+    <a class="scroll" href="#reservar" data-go aria-label="Bajar a reservas"><i></i></a>
+    <div class="stat r"><span id="todayFree">— libres<br>hoy</span><span class="ic">90′</span></div>
+  </div></div>
+</div>
+
+<section class="planz" id="reservar"><div class="wrap">
+  <div class="sh"><div><small>Turnos de 90 minutos · pago en recepción</small><h2 class="H"><span class="mask"><span>Reserva</span></span><span class="mask"><span><em>tu pista</em></span></span></h2></div><p>Elige día y pista. Verás todas sus horas: en verde las libres, en gris las ocupadas.</p></div>
+  <div class="slider"><button class="sa l" data-for="days" aria-label="Días anteriores">‹</button><div class="days rail" id="days" role="group" aria-label="Día"></div><button class="sa r" data-for="days" aria-label="Más días">›</button></div>
+  <div class="book">
+    <div class="stage"><div class="turf" id="turf">
+      <svg viewBox="0 0 750 550" id="plan" role="group" aria-label="Pistas">
+        <rect x="0" y="0" width="750" height="550" fill="#2F8A3A"/>
+        <g id="courts"></g>
+        <rect class="wall" x="0" y="261" width="298" height="22"/>
+        <rect class="wall" x="479" y="261" width="271" height="22"/>
+      </svg>
+    </div></div>
+    <div class="hours" id="hoursPanel" aria-live="polite"></div>
+  </div>
+</div></section>
+
+<section id="partidas" style="padding-top:0;background:var(--soft)"><div class="wrap">
+  <div class="sh"><div><small>Partidos a los que les falta gente</small><h2 class="H"><span class="mask"><span>Partidas</span></span><span class="mask"><span><em>abiertas</em></span></span></h2></div><p>La pista ya está reservada. Únete al partido de tu nivel y completa el cuarteto.</p></div>
+  <div class="matches" id="matches"></div>
+</div></section>
+
+
+<section id="club"><div class="wrap">
+  <div class="sh"><div><small>Instalaciones</small><h2 class="H"><span class="mask"><span>El <em>club</em></span></span></h2></div><p>C/ Barranc Pascual, 27 · Polígono Campo Aníbal · Puçol.</p></div>
+  <div class="cards">
+    <article class="cc"><div class="art"><svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice"><rect width="400" height="300" fill="#1D49CF"/><g stroke="#fff" stroke-width="3" fill="none" opacity=".85"><rect x="40" y="60" width="320" height="180"/><path d="M200 50v200M100 60v180M300 60v180M100 150h200"/></g><circle cx="290" cy="110" r="14" fill="#C9E63A"/></svg></div><div class="bd"><h4>4 pistas de cristal</h4><p>Homologadas para competición. Cubiertas, unos 12 m de altura y ventiladores.</p></div></article>
+    <article class="cc"><div class="art"><svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice"><rect width="400" height="300" fill="#0A0C12"/><circle cx="200" cy="120" r="46" fill="#8EE04B"/><path d="M110 300c10-70 50-100 90-100s80 30 90 100" fill="#8EE04B"/></svg></div><div class="bd"><h4>Escuela</h4><p>Clases para adultos y niños, por niveles.</p></div></article>
+    <article class="cc"><div class="art"><svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice"><rect width="400" height="300" fill="#3E9B45"/><path d="M150 70h100v40a50 50 0 0 1-100 0z" fill="#fff"/><path d="M200 160v50M160 230h80" stroke="#fff" stroke-width="10"/></svg></div><div class="bd"><h4>Ligas y torneos</h4><p>Para grupos y empresas. Partidos organizados por nivel.</p></div></article>
+    <article class="cc"><div class="art"><svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice"><rect width="400" height="300" fill="#E9ECF3"/><path d="M130 110h120v70a60 60 0 0 1-120 0z" fill="#1D49CF"/><path d="M250 125h20a25 25 0 0 1 0 50h-20" stroke="#1D49CF" stroke-width="12" fill="none"/></svg></div><div class="bd"><h4>Cafetería y tienda</h4><p>Bar con terraza y wifi, tienda, zona infantil, ping-pong y bádminton.</p></div></article>
+  </div>
+</div></section>
+
+<section class="dark" id="contacto"><div class="wrap">
+  <div class="sh"><div><small style="color:#A8AEBE">Contacto</small><h2 class="H"><span class="mask"><span>Horario y</span></span><span class="mask"><span><em>contacto</em></span></span></h2></div><p>Reservas también por teléfono, WhatsApp o en recepción. Anulación sin coste hasta 24 h antes.</p></div>
+  <div class="grid3">
+    <div class="dbox"><h5>Horario</h5><dl id="hours"></dl></div>
+    <div class="dbox"><h5>Reservas</h5><p>Teléfono <b class="tn" id="cPhone"></b><button class="copy" data-copy="phone">Copiar</button></p><p>WhatsApp <b class="tn" id="cWa"></b><button class="copy" data-copy="whatsapp">Copiar</button></p><p><span id="cMail"></span><button class="copy" data-copy="email">Copiar</button></p></div>
+    <div class="dbox"><h5>Dirección</h5><p id="addr"></p><a class="pill lime" id="maps" target="_blank" rel="noopener" style="margin-top:8px">Cómo llegar ↗</a></div>
+  </div>
+  <div class="mega" id="mega">Padel Resort · Puçol</div>
+</div></section>
+<footer><div class="wrap"><span>© Padel Resort · Puçol · Instagram @padel_resort</span><span>Propuesta de diseño · disponibilidad simulada</span></div></footer>
+
+<div class="scrim" id="scrim"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Reserva" data-lenis-prevent></div>
+<div class="toast" id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+<script>/* Padel Resort · núcleo de disponibilidad (simulada) */
+const PR = (() => {
+  const CLUB = {
+    name: 'Padel Resort',
+    phone: '961 465 078',
+    whatsapp: '681 228 937',
+    email: 'info@padelresort.es',
+    street: 'C/ Barranc Pascual, 27',
+    area: 'Pol. Ind. Campo Aníbal',
+    city: '46530 Puçol (València)',
+    instagram: '@padel_resort',
+    maps: 'https://www.google.com/maps/search/?api=1&query=Padel+Resort+Carrer+Barranc+Pascual+27+Pu%C3%A7ol'
+  };
+  const COURTS = [
+    { id: 1, name: 'Pista 1' },
+    { id: 2, name: 'Pista 2' },
+    { id: 3, name: 'Pista 3' },
+    { id: 4, name: 'Pista 4' }
+  ];
+  const DUR = 90;
+  // minutos desde las 0:00; >1440 = madrugada del día siguiente. 0 = domingo
+  const HOURS = {
+    0: [[480, 840], [990, 1290]],
+    1: [[510, 1380]], 2: [[510, 1380]], 3: [[510, 1380]],
+    4: [[510, 1530]],
+    5: [[510, 1590]], 6: [[510, 1590]]
+  };
+  const HOURS_TEXT = [
+    ['Lunes a miércoles', '8:30 – 23:00'],
+    ['Jueves', '8:30 – 1:30'],
+    ['Viernes y sábado', '8:30 – 2:30'],
+    ['Domingo', '8:00 – 14:00 · 16:30 – 21:30']
+  ];
+  const DOW = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+  const DOW_S = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+  const MON = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+  const MON_S = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+
+  const pad = n => String(n).padStart(2, '0');
+  const today = () => { const d = new Date(); d.setHours(0, 0, 0, 0); return d; };
+  const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+  const key = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  const sameDay = (a, b) => key(a) === key(b);
+  const fmt = t => `${pad(Math.floor(t / 60) % 24)}:${pad(t % 60)}`;
+  const range = t => `${fmt(t)} – ${fmt(t + DUR)}`;
+  const longDate = d => `${DOW[d.getDay()]} ${d.getDate()} de ${MON[d.getMonth()]}`;
+  const shortDate = d => `${DOW_S[d.getDay()]} ${d.getDate()} ${MON_S[d.getMonth()]}`;
+  const rel = d => {
+    const diff = Math.round((d - today()) / 864e5);
+    return diff === 0 ? 'Hoy' : diff === 1 ? 'Mañana' : DOW[d.getDay()];
+  };
+
+  function slots(d) {
+    const out = [];
+    (HOURS[d.getDay()] || []).forEach(([a, b]) => { for (let t = a; t + DUR <= b; t += DUR) out.push(t); });
+    return out;
+  }
+  const isPeak = (d, t) => d.getDay() === 0 || d.getDay() === 6 || t >= 1050;
+  const price = (d, t) => (isPeak(d, t) ? 32 : 24);
+  const band = t => (t < 780 ? 'Mañana' : t < 1020 ? 'Mediodía' : t < 1260 ? 'Tarde' : 'Noche');
+
+  function hash(s) {
+    let h = 2166136261;
+    for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); }
+    h ^= h >>> 13; h = Math.imul(h, 0x5bd1e995); h ^= h >>> 15;
+    return (h >>> 0) / 4294967296;
+  }
+  function demand(d, t) {
+    const we = d.getDay() === 0 || d.getDay() === 6;
+    const ahead = Math.round((d - today()) / 864e5);
+    let p = t < 600 ? 0.2 : t < 780 ? 0.32 : t < 1020 ? 0.28 : t < 1290 ? 0.72 : t < 1410 ? 0.48 : 0.3;
+    if (we && t < 840) p += 0.3;
+    p *= Math.max(0.45, 1 - ahead * 0.06);
+    return Math.min(p, 0.92);
+  }
+
+  let mine = [];
+  try { mine = JSON.parse(localStorage.getItem('pr-reservas') || '[]'); } catch (e) { mine = []; }
+  const save = () => { try { localStorage.setItem('pr-reservas', JSON.stringify(mine)); } catch (e) {} };
+
+  function status(d, court, t, live) {
+    const k = key(d);
+    if (mine.some(b => b.k === k && b.c === court && b.t === t)) return 'mine';
+    if (!live && sameDay(d, today())) {
+      const now = new Date(); const m = now.getHours() * 60 + now.getMinutes();
+      if (t < m) return 'past';
+    }
+    return hash(`${k}|${court}|${t}`) < demand(d, t) ? 'taken' : 'free';
+  }
+  const freeCourts = (d, t) => COURTS.filter(c => status(d, c.id, t) === 'free');
+  function dayStats(d) {
+    let free = 0, total = 0;
+    slots(d).forEach(t => COURTS.forEach(c => { const s = status(d, c.id, t); if (s !== 'past') { total++; if (s === 'free') free++; } }));
+    return { free, total };
+  }
+  function nextFree(from = today(), days = 14) {
+    for (let i = 0; i < days; i++) {
+      const d = addDays(from, i);
+      for (const t of slots(d)) { const f = freeCourts(d, t); if (f.length) return { d, t, court: f[0].id }; }
+    }
+    return null;
+  }
+  function book(d, court, t, name) {
+    const code = 'PR-' + Math.floor(hash(`${key(d)}${court}${t}${Date.now()}`) * 9000 + 1000);
+    mine.push({ k: key(d), c: court, t, name, code });
+    save();
+    return code;
+  }
+  function cancel(code) { mine = mine.filter(b => b.code !== code); save(); }
+  const bookings = () => mine.slice().sort((a, b) => (a.k + fmt(a.t)).localeCompare(b.k + fmt(b.t)));
+  const parseKey = k => { const [y, m, dd] = k.split('-').map(Number); return new Date(y, m - 1, dd); };
+  const nowMinutes = () => { const n = new Date(); return n.getHours() * 60 + n.getMinutes(); };
+
+  return { CLUB, COURTS, DUR, HOURS_TEXT, DOW, DOW_S, MON, MON_S, today, addDays, key, sameDay, fmt, range, longDate, shortDate, rel, slots, price, isPeak, band, status, freeCourts, dayStats, nextFree, book, cancel, bookings, parseKey, nowMinutes };
+})();
+</script>
+<script>
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const CSVG = '<svg viewBox="0 0 100 50"><rect x="1" y="1" width="98" height="48"/><path d="M50 1v48M20 1v48M80 1v48M20 25h60"/></svg>';
+let day = PR.today(), planT = null, court = 1;
+
+/* grano de la pista (canvas) */
+function grain(){
+  const c = $('#grain'), r = c.getBoundingClientRect(), dpr = Math.min(devicePixelRatio || 1, 2);
+  c.width = r.width * dpr; c.height = r.height * dpr;
+  const x = c.getContext('2d'), g = x.createRadialGradient(c.width * .55, c.height * .4, 0, c.width * .55, c.height * .4, c.width * .8);
+  g.addColorStop(0, '#2457E0'); g.addColorStop(.6, '#1B44C2'); g.addColorStop(1, '#10308F');
+  x.fillStyle = g; x.fillRect(0, 0, c.width, c.height);
+  const img = x.getImageData(0, 0, c.width, c.height), d = img.data;
+  for (let i = 0; i < d.length; i += 4){ const n = (Math.random() - .5) * 26; d[i] += n; d[i+1] += n; d[i+2] += n; }
+  x.putImageData(img, 0, 0);
+}
+
+/* ahora mismo */
+function renderNow(){
+  const d = PR.today(), m = PR.nowMinutes(), sl = PR.slots(d);
+  const cur = sl.find(t => t <= m && m < t + PR.DUR);
+  $('#nowWhen').textContent = cur != null ? `Turno ${PR.range(cur)} · ${PR.longDate(d)}` : `Club cerrado ahora · ${PR.longDate(d)}`;
+  $('#nowList').innerHTML = PR.COURTS.map(c => {
+    const s = cur == null ? null : PR.status(d, c.id, cur, true);
+    const nx = sl.find(t => t > m && PR.status(d, c.id, t) === 'free');
+    return `<li><b>Pista ${c.id}</b><span>${nx != null ? 'Próximo hueco ' + PR.fmt(nx) : 'Sin huecos hoy'}</span><em class="${s === 'free' ? 'f' : 't'}">${s == null ? 'Cerrada' : s === 'free' ? 'Libre' : 'En juego'}</em></li>`;
+  }).join('');
+  const n = PR.nextFree();
+  if (n){ $('#nowNext').innerHTML = `Primer hueco: <b>${PR.rel(n.d)} ${PR.fmt(n.t)}</b> · P${n.court}`; $('#nowGo').onclick = e => { e.preventDefault(); openSheet(n.d, n.court, n.t); }; }
+  $('#todayFree').innerHTML = `${PR.dayStats(d).free} libres<br>hoy`;
+}
+
+/* tabla */
+function renderDays(){
+  let h = '';
+  for (let i = 0; i < 14; i++){ const d = PR.addDays(PR.today(), i); h += `<button class="dy" data-i="${i}" aria-pressed="${PR.sameDay(d, day)}"><small>${i < 2 ? PR.rel(d) : PR.DOW_S[d.getDay()]}</small><b class="tn">${d.getDate()}</b><em>${PR.dayStats(d).free} libres</em></button>`; }
+  $('#days').innerHTML = h;
+  $$('#days .dy').forEach(b => b.onclick = () => { if (wasDrag) return; day = PR.addDays(PR.today(), +b.dataset.i); renderDays(); renderPlan(); anim2(); });
+}
+/* plano */
+const POS = { 4: [20, 18], 3: [444, 18], 2: [20, 322], 1: [444, 322] }, CW = 285, CH = 205;
+function drawCourts(){
+  $('#courts').innerHTML = PR.COURTS.map(c => { const [x, y] = POS[c.id];
+    return `<g class="court" id="pc${c.id}" data-c="${c.id}" tabindex="0" role="button">
+    <rect class="surf" x="${x}" y="${y}" width="${CW}" height="${CH}" rx="6"/>
+    <g stroke="#fff" stroke-opacity=".85" stroke-width="2" fill="none"><rect x="${x+14}" y="${y+14}" width="${CW-28}" height="${CH-28}"/><path d="M${x+CW/2} ${y+8}v${CH-16}M${x+70} ${y+14}v${CH-28}M${x+CW-70} ${y+14}v${CH-28}M${x+70} ${y+CH/2}h${CW-140}"/></g>
+    <rect class="ring" x="${x}" y="${y}" width="${CW}" height="${CH}" rx="6"/>
+    <text class="num" x="${x+CW-22}" y="${y+60}" text-anchor="end">${c.id}</text>
+    <g class="tag"><rect x="${x+CW-132}" y="${y+CH-46}" width="118" height="32" rx="16"/><text x="${x+CW-73}" y="${y+CH-24}" text-anchor="middle" id="tg${c.id}"></text></g></g>`; }).join('');
+  $$('#courts .court').forEach(g => { const pick = () => { court = +g.dataset.c; renderPlan(); anim2(); if (innerWidth < 960) $('#hoursPanel').scrollIntoView({ behavior: 'smooth', block: 'start' }); };
+    g.onclick = pick; g.onkeydown = e => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); pick(); } }; });
+}
+function renderPlan(){
+  PR.COURTS.forEach(c => {
+    const ts = PR.slots(day).filter(t => PR.status(day, c.id, t) !== 'past');
+    const f = ts.filter(t => PR.status(day, c.id, t) === 'free').length;
+    $('#pc' + c.id).setAttribute('class', `court${f ? '' : ' full'}${c.id === court ? ' sel' : ''}`);
+    $('#pc' + c.id).setAttribute('aria-label', `${c.name}: ${f} horas libres`);
+    $('#pc' + c.id).setAttribute('aria-pressed', c.id === court);
+    $('#tg' + c.id).textContent = f ? `${f} LIBRE${f > 1 ? 'S' : ''}` : 'COMPLETA';
+  });
+  renderHours();
+}
+function renderHours(anim){
+  const all = PR.slots(day), ts = all.filter(t => PR.COURTS.some(c => PR.status(day, c.id, t) !== 'past'));
+  const hidden = all.length - ts.length;
+  const free = ts.filter(t => PR.status(day, court, t) === 'free').length;
+  let h = `<div class="hd"><div><b>Pista ${court}</b><span>${PR.longDate(day)}</span></div><span><b style="font:inherit;display:inline;color:#2E7A0F;font-weight:800">${free}</b> ${free === 1 ? 'hora libre' : 'horas libres'}</span></div>
+  <div class="cpick" role="group" aria-label="Pista">${PR.COURTS.map(c => { const f = ts.filter(t => PR.status(day, c.id, t) === 'free').length; return `<button data-c="${c.id}" aria-pressed="${c.id === court}">P${c.id}<small>${f} ${f === 1 ? 'libre' : 'libres'}</small></button>`; }).join('')}</div>`;
+  h += ts.length ? `<div class="hgrid">${ts.map(t => { const s = PR.status(day, court, t);
+    const lab = s === 'free' ? 'Libre' : s === 'taken' ? 'Ocupada' : s === 'mine' ? 'Tu reserva' : 'Ya pasó';
+    return `<button class="hs ${s}" data-t="${t}" ${s === 'free' ? '' : 'disabled'} aria-label="${PR.range(t)} ${lab}"><b class="tn">${PR.fmt(t)}</b><small class="tn">hasta ${PR.fmt(t + PR.DUR)}</small><span class="st"><i></i>${lab}</span></button>`; }).join('')}</div>` : `<div class="empty">${all.length ? 'Ya no quedan horas hoy. Elige otro día arriba.' : 'El club está cerrado este día.'}</div>`;
+  if (ts.length && hidden) h += `<p style="font-size:12px;color:var(--mute);margin:12px 0 0">No se muestran las ${hidden} horas de hoy que ya han pasado.</p>`;
+  $('#hoursPanel').innerHTML = h;
+  $$('#hoursPanel .hs.free').forEach(b => b.onclick = () => openSheet(day, court, +b.dataset.t));
+  $$('#hoursPanel .cpick button').forEach(b => b.onclick = () => { court = +b.dataset.c; renderPlan(); anim2(); });
+  if (anim) anim2();
+}
+function anim2(){ if (window.gsap && !reduce) gsap.from('#hoursPanel .hs', { y: 12, opacity: 0, duration: .35, stagger: .02, ease: 'power2.out' }); }
+
+/* partidas abiertas (ejemplo) */
+const NAMES = ['Marta','Javi','Lucía','Pablo','Sergio','Andrea','Carlos','Nuria','Toni','Elena','Rubén','Inma'];
+const LEVELS = ['Nivel 2.0 – 2.5','Nivel 2.5 – 3.0','Nivel 3.0 – 3.5','Nivel 3.5 – 4.0'];
+let joined = new Set();
+try { joined = new Set(JSON.parse(localStorage.getItem('pr-partidas') || '[]')); } catch (e) {}
+function openMatches(){
+  const out = [];
+  for (let i = 0; i < 4 && out.length < 6; i++){
+    const d = PR.addDays(PR.today(), i);
+    PR.slots(d).forEach(t => PR.COURTS.forEach(c => {
+      if (out.length >= 6) return;
+      const h = Math.abs(Math.sin(d.getDate() * 13 + t * 7 + c.id * 31));
+      if (PR.status(d, c.id, t) === 'taken' && h > .86){
+        const n = 2 + Math.floor(h * 100) % 2;
+        out.push({ id: `${PR.key(d)}-${c.id}-${t}`, d, t, c: c.id, lvl: LEVELS[Math.floor(h * 1000) % 4], players: Array.from({ length: n }, (_, k) => NAMES[(Math.floor(h * 1e4) + k * 5) % NAMES.length]) });
+      }
+    }));
+  }
+  return out;
+}
+function renderMatches(){
+  $('#matches').innerHTML = openMatches().map(m => {
+    const me = joined.has(m.id), ps = me ? [...m.players, 'Tú'] : m.players, left = 4 - ps.length;
+    return `<article class="mt"><div class="when"><div><b class="tn">${PR.fmt(m.t)}</b><span>${PR.rel(m.d)} · ${PR.shortDate(m.d)} · Pista ${m.c}</span></div><span class="lvl">${m.lvl}</span></div>
+      <div class="players">${ps.map(p => `<span class="pl${p === 'Tú' ? ' me' : ''}" title="${p}">${p === 'Tú' ? 'Tú' : p.slice(0, 2).toUpperCase()}</span>`).join('')}${'<span class="pl empty">+</span>'.repeat(left)}</div>
+      <div class="foot"><span>${left ? `Falta${left > 1 ? 'n' : ''} ${left}` : 'Completa'}</span><button class="join" data-id="${m.id}" ${me || !left ? 'disabled' : ''}>${me ? 'Estás dentro' : 'Unirme'}</button></div></article>`;
+  }).join('');
+  $$('#matches .join').forEach(b => b.onclick = () => { joined.add(b.dataset.id); try { localStorage.setItem('pr-partidas', JSON.stringify([...joined])); } catch (e) {} renderMatches(); toast('Te has unido a la partida'); });
+}
+
+/* reserva */
+function openSheet(d, c, t){
+  $('#sheet').innerHTML = `<div class="tk">${CSVG}<small>Reserva</small><b>Pista ${c}</b><div class="r"><span>${PR.longDate(d)}</span><span class="tn">${PR.range(t)}</span><span>90 min</span></div></div>
+  <form id="sf"><label>Nombre y apellidos<input id="sn" required autocomplete="name"></label><label>Teléfono<input id="sp" required inputmode="tel" autocomplete="tel"></label>
+  <p class="note">Pago en recepción antes de jugar. Anulación sin coste hasta 24 h antes.</p>
+  <div class="acts"><button type="button" class="b-ghost" id="sx">Cancelar</button><button class="b-go">Confirmar reserva</button></div></form>`;
+  $('#sheet').classList.add('on'); $('#scrim').classList.add('on');
+  setTimeout(() => $('#sn').focus(), 300);
+  $('#sx').onclick = closeSheet;
+  $('#sf').onsubmit = e => { e.preventDefault(); const code = PR.book(d, c, t, $('#sn').value);
+    $('#sheet').innerHTML = `<div class="okv"><div class="c"><svg width="40" height="40" viewBox="0 0 40 40"><path d="M9 21l7 7 15-16" fill="none" stroke="#0A0C12" stroke-width="4" stroke-linecap="round"/></svg></div><h3>Reservada</h3><p>Pista ${c} · ${PR.longDate(d)} · ${PR.range(t)}</p><code>${code}</code><p class="note" style="margin:10px 0 18px">Recepción la valida y te avisa por WhatsApp.</p><button class="pill dark" id="sok" style="padding:12px 22px">Hecho</button></div>`;
+    $('#sok').onclick = closeSheet;
+    if (window.gsap && !reduce) gsap.from('.okv .c', { scale: 0, rotate: -120, duration: .8, ease: 'back.out(2)' });
+    refresh(); };
+}
+function closeSheet(){ $('#sheet').classList.remove('on'); $('#scrim').classList.remove('on'); }
+function myBookings(){
+  const list = PR.bookings();
+  $('#sheet').innerHTML = `<div class="tk">${CSVG}<small>Tus reservas</small><b>${list.length} reserva${list.length === 1 ? '' : 's'}</b></div><div style="padding:20px 22px;display:grid;gap:10px">${list.length ? list.map(b => `<div style="display:flex;justify-content:space-between;gap:10px;align-items:center;border-bottom:1px solid var(--line);padding-bottom:10px"><span><b>Pista ${b.c}</b> · ${PR.shortDate(PR.parseKey(b.k))} · <span class="tn">${PR.range(b.t)}</span></span><button class="chip" data-code="${b.code}">Anular</button></div>`).join('') : '<p class="note">Aún no tienes reservas.</p>'}<div class="acts" style="display:flex;justify-content:flex-end"><button class="pill dark" id="sok" style="padding:12px 22px">Cerrar</button></div></div>`;
+  $('#sheet').classList.add('on'); $('#scrim').classList.add('on');
+  $('#sok').onclick = closeSheet;
+  $$('#sheet [data-code]').forEach(b => b.onclick = () => { PR.cancel(b.dataset.code); refresh(); myBookings(); toast('Reserva anulada'); });
+}
+function refresh(){ renderDays(); renderPlan(); renderNow(); }
+let tt; function toast(m){ const t = $('#toast'); t.textContent = m; t.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('on'), 2600); }
+
+/* contacto */
+function renderContact(){
+  const dw = PR.today().getDay(), idx = dw >= 1 && dw <= 3 ? 0 : dw === 4 ? 1 : dw === 0 ? 3 : 2;
+  $('#hours').innerHTML = PR.HOURS_TEXT.map(([a, b], i) => `<dt>${a}${i === idx ? ' · hoy' : ''}</dt><dd class="tn${i === idx ? ' today' : ''}">${b}</dd>`).join('');
+  $('#cPhone').textContent = PR.CLUB.phone; $('#cWa').textContent = PR.CLUB.whatsapp; $('#cMail').textContent = PR.CLUB.email;
+  $('#addr').innerHTML = `${PR.CLUB.street}<br>${PR.CLUB.area}<br>${PR.CLUB.city}`; $('#maps').href = PR.CLUB.maps;
+  $$('.copy').forEach(b => b.onclick = () => { const v = PR.CLUB[b.dataset.copy]; (navigator.clipboard ? navigator.clipboard.writeText(v) : Promise.reject()).then(() => toast('Copiado: ' + v)).catch(() => toast(v)); });
+}
+
+/* scroll + animación */
+let lenis = null;
+function go(sel){ const el = document.querySelector(sel); if (!el) return; if (lenis) lenis.scrollTo(el, { offset: sel === '#top' ? 0 : -60, duration: 1.3 }); else el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' }); }
+$$('[data-go]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); go(a.getAttribute('href')); }));
+
+function splitChars(el){ el.innerHTML = [...el.textContent].map(ch => `<span class="ch">${ch === ' ' ? '&nbsp;' : ch}</span>`).join(''); }
+
+function motion(){
+  const sticky = () => $('#sticky').classList.toggle('on', scrollY > innerHeight * .7);
+  addEventListener('scroll', sticky, { passive: true });
+  if (reduce) return;
+  if (window.Lenis){
+    lenis = new Lenis({ duration: 1.2, smoothWheel: true });
+    if (window.gsap){ lenis.on('scroll', () => window.ScrollTrigger && ScrollTrigger.update()); gsap.ticker.add(t => lenis.raf(t * 1000)); gsap.ticker.lagSmoothing(0); }
+    else { const raf = t => { lenis.raf(t); requestAnimationFrame(raf); }; requestAnimationFrame(raf); }
+  }
+  if (!window.gsap) return;
+  // portada: líneas que suben desde la máscara, letra a letra
+  $$('#h1 .mask>span').forEach(splitChars);
+  const L = $('#cline'), len = 1100; L.style.strokeDasharray = len;
+  const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
+  tl.from('.guides i', { scaleX: 0, scaleY: 0, duration: 1.2, stagger: .05, ease: 'power2.inOut' }, 0)
+    .fromTo(L, { strokeDashoffset: len }, { strokeDashoffset: 0, duration: 1.3, ease: 'power3.inOut' }, 0)
+    .from('#h1 .mask:nth-child(1) .ch', { yPercent: 115, duration: 1, stagger: .045 }, .25)
+    .from('#h1 .mask:nth-child(2) .ch', { yPercent: 115, duration: 1, stagger: .045 }, .4)
+    .from('.hero .sub .mask>span', { yPercent: 110, duration: .8, stagger: .1 }, .9)
+    .from('#cta', { y: 20, opacity: 0, scale: .9, duration: .7 }, 1.1)
+    .from('header .wrap > *', { y: -20, opacity: 0, duration: .7, stagger: .08 }, .8)
+    .from('.hero-b .wrap > *', { y: 20, opacity: 0, duration: .7, stagger: .08 }, 1.1)
+    .from('#now', { x: 40, opacity: 0, duration: .9 }, 1.2)
+    .from('#racket', { x: -160, rotate: -60, opacity: 0, duration: 1.4 }, .5)
+    .from('#ballwrap', { y: -300, opacity: 0, duration: 1, ease: 'bounce.out' }, .9);
+  // título: una ola de luz lima recorre el nombre de vez en cuando; cada letra se levanta al pasar el ratón
+  const chars = $$('#h1 .ch');
+  const wave = () => gsap.timeline()
+    .to(chars, { color: '#8EE04B', yPercent: -7, duration: .32, stagger: .045, ease: 'sine.out' })
+    .to(chars, { color: '#FFFFFF', yPercent: 0, duration: .55, stagger: .045, ease: 'sine.inOut' }, .3);
+  tl.call(() => { wave(); setInterval(() => { if (!document.hidden && scrollY < innerHeight) wave(); }, 6500); }, null, '+=.4');
+  chars.forEach(c => c.addEventListener('mouseenter', () => gsap.fromTo(c, { yPercent: 0 }, { yPercent: -12, duration: .22, yoyo: true, repeat: 1, ease: 'power2.out', overwrite: 'auto' })));
+  // bote de la pelota
+  gsap.to('#ball', { y: 70, duration: .55, ease: 'power2.in', yoyo: true, repeat: -1, delay: 2 });
+  gsap.to('#bshadow', { scale: 1.5, opacity: .9, duration: .55, ease: 'power2.in', yoyo: true, repeat: -1, delay: 2 });
+  if (!window.ScrollTrigger) return;
+  gsap.registerPlugin(ScrollTrigger);
+  gsap.to('#h1', { yPercent: 30, scale: .92, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+  gsap.to('#racket', { y: -120, rotate: -10, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+  // títulos de sección
+  $$('.sh h2').forEach(h => gsap.from(h.querySelectorAll('.mask>span'), { yPercent: 110, duration: 1, stagger: .1, ease: 'power4.out', scrollTrigger: { trigger: h, start: 'top 85%' } }));
+  // el plano se aplana al hacer scroll
+  // entrada sencilla del plano: sube con fundido, las pistas aparecen una a una y se dibujan sus líneas
+  const lines = $$('#courts .court g path, #courts .court g rect');
+  lines.forEach(l => { const n = l.getTotalLength ? l.getTotalLength() : 1000; l.style.strokeDasharray = n; l.style.strokeDashoffset = n; });
+  gsap.timeline({ scrollTrigger: { trigger: '#turf', start: 'top 85%', once: true } })
+    .from('#turf', { y: 40, opacity: 0, duration: .8, ease: 'power3.out' })
+    .from('#courts .court', { opacity: 0, scale: .92, transformOrigin: '50% 50%', duration: .6, stagger: .12, ease: 'power3.out' }, '-=.4')
+    .to(lines, { strokeDashoffset: 0, duration: 1, ease: 'power2.inOut', stagger: .02 }, '-=.5')
+    .from('#courts .tag', { opacity: 0, y: 10, duration: .4, stagger: .08, ease: 'power2.out' }, '-=.6');
+  gsap.from('.cc', { y: 70, opacity: 0, stagger: .1, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: '.cards', start: 'top 85%' } });
+  gsap.from('.mt', { y: 50, opacity: 0, stagger: .08, duration: .9, ease: 'power3.out', scrollTrigger: { trigger: '#matches', start: 'top 85%' } });
+  gsap.from('.dbox', { y: 50, opacity: 0, stagger: .1, duration: .9, ease: 'power3.out', scrollTrigger: { trigger: '.grid3', start: 'top 85%' } });
+  gsap.fromTo('#mega', { xPercent: 5 }, { xPercent: -25, ease: 'none', scrollTrigger: { trigger: '#contacto', start: 'top bottom', end: 'bottom top', scrub: true } });
+}
+
+/* deslizables: flechas, arrastre y centrado */
+let wasDrag = false;
+function arrows(){ $$('.sa').forEach(b => { const r = document.getElementById(b.dataset.for); const max = r.scrollWidth - r.clientWidth - 2; b.disabled = b.classList.contains('l') ? r.scrollLeft <= 2 : r.scrollLeft >= max; }); }
+function centerOn(sel){ const r = $(sel), el = r.querySelector('[aria-pressed="true"]'); if (el){ r.style.scrollBehavior = 'auto'; r.scrollLeft = el.offsetLeft - r.clientWidth / 2 + el.clientWidth / 2; r.style.scrollBehavior = ''; } arrows(); }
+$$('.sa').forEach(b => b.onclick = () => { const r = document.getElementById(b.dataset.for); r.scrollBy({ left: (b.classList.contains('l') ? -1 : 1) * r.clientWidth * .7 }); });
+$$('.rail').forEach(r => {
+  r.addEventListener('scroll', arrows, { passive: true });
+  r.addEventListener('wheel', e => { if (Math.abs(e.deltaY) > Math.abs(e.deltaX)){ r.scrollLeft += e.deltaY; e.preventDefault(); } }, { passive: false });
+  let x0 = 0, s0 = 0, down = false;
+  r.addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse') return; down = true; wasDrag = false; x0 = e.clientX; s0 = r.scrollLeft; });
+  addEventListener('pointermove', e => { if (!down) return; const dx = e.clientX - x0; if (Math.abs(dx) > 5){ wasDrag = true; r.classList.add('drag'); } r.scrollLeft = s0 - dx; });
+  addEventListener('pointerup', () => { if (!down) return; down = false; r.classList.remove('drag'); setTimeout(() => wasDrag = false, 0); });
+  r.setAttribute('data-lenis-prevent-wheel', '');
+});
+$('#scrim').onclick = closeSheet;
+$('#mine1').onclick = myBookings; $('#mine2').onclick = myBookings;
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSheet(); });
+addEventListener('resize', () => { clearTimeout(window._g); window._g = setTimeout(grain, 200); });
+
+grain(); renderNow(); renderDays(); drawCourts(); renderPlan(); renderMatches(); renderContact(); centerOn('#days');
+motion();
+</script>
+
+</body>
+</html>
